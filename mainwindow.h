@@ -1,9 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <infodialog.h>
-#include <settingsdialog.h>
-
 #include <QMainWindow>
 #include <QMessageBox>
 
@@ -24,17 +21,16 @@ public:
 
 private slots:
     void on_play_button_clicked();
-
     void on_actionQuit_triggered();
-
     void on_actionInfo_triggered();
-
     void on_actionSettings_triggered();
 
 private:
     Ui::MainWindow *ui;
     Cda_Main *cda;
+
     Settings *settings;
+
     void prepareConfig();
 };
 

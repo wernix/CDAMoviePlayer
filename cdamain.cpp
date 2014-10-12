@@ -28,37 +28,6 @@ Cda_Main::Cda_Main()
 Cda_Main::~Cda_Main() {
 }
 
-// Check mplayer installation path
-// If mplayer is not installed return false
-bool Cda_Main::getPlayerPath()
-{
-    string result = system("which mplayer");
-    if(result.empty())
-        return false;
-    else
-        player_path = result.substr(0, result.size()-1);
-    return true;
-}
-
-// Func running media player
-bool Cda_Main::openPlayer()
-{
-    string mplayer = player_path + " -cookies -cookies-file "+cookie_file+" '" + movie_url+"'";
-    cout << mplayer << endl;
-    string result = system(mplayer.c_str());
-    cout << result << endl;
-
-
-    if(result.empty()) {
-        return false;
-    }else if(result.substr(0,3) == "sh:") {
-        error = result;
-        return false;
-    }
-
-    return true;
-}
-
 // std::system function implementation
 // return output from console
 string Cda_Main::system(string cmd)
@@ -76,6 +45,27 @@ string Cda_Main::system(string cmd)
                 pclose(stream);
     }
     return data;
+}
+
+// Func running media player
+bool Cda_Main::openPlayer(string mplayer_path, bool fullscreen)
+{
+    string options = " -cookies -cookies-file "+cookie_file;
+
+    if(fullscreen)
+        options.append(" -fs");
+
+    string cmd = mplayer_path + options + " '"+movie_url+"'";
+    string result = system(cmd);
+
+    if(result.empty()) {
+        return false;
+    }else if(result.substr(0,3) == "sh:") {
+        error = result;
+        return false;
+    }
+
+    return true;
 }
 
 // Function get destination movie url from cda.pl url (tmp file)
@@ -101,10 +91,8 @@ bool Cda_Main::getSourceCode()
         curl_global_cleanup();
         fclose(file);
 
-        if(CURLE_OK != res) {
-            /* we failed */
+        if(CURLE_OK != res)
             fprintf(stderr, "curl told us %d\n", res);
-        }
 
         if(getMovieUrlFromSourceCode(source_file.c_str())) {
             curl_easy_cleanup(curl);
@@ -147,8 +135,7 @@ bool Cda_Main::getMovieUrlFromSourceCode(string source_file_path)
     return false;
 }
 
-// Preparing direct url to movie
-// from cda site
+// Preparing direct url to movie from cda site
 bool Cda_Main::prepare()
 {
     if(getSourceCode()) {

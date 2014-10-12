@@ -1,7 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+
+#include "infodialog.h"
+#include "ui_infodialog.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,19 +19,16 @@ MainWindow::MainWindow(QWidget *parent) :
     cda = new Cda_Main;
 
     // Checking player installation. If not installed -> quit;
-    if(!cda->getPlayerPath()) {
+    if(!settings->mplayer_installed) {
         QMessageBox::critical(this, "MPlayer not installed!", "MPlayer is not installed (required). Try running after insall MPlayer.", QMessageBox::Ok);
         QApplication::quit();
     }
     // Check / Load / Create Config file
     prepareConfig();
 
-    // Check player path and show information
-    // if is not valid
-    if(!cda->getPlayerPath())
-        QMessageBox::critical(this, "Player not found!", "Application require MPlayer to running.\nPlease install MPlayer and try again.\n(ubuntu ex. sudo apt-get install mplayer)", QMessageBox::Ok);
-
-    ui->player_path->setText(QString::fromStdString(settings->default_player_path));
+    // Check player path and show information if nt installed
+    if(!settings->mplayer_installed)
+        QMessageBox::critical(this, "Player not found!", "Application require MPlayer to running.\nPlease install MPlayer and try again.\n(Ubuntu ex. sudo apt-get install mplayer)", QMessageBox::Ok);
 }
 
 MainWindow::~MainWindow()
@@ -38,44 +39,49 @@ MainWindow::~MainWindow()
 
 void MainWindow::prepareConfig()
 {
-    if(settings->configFileExist()) {
-        if(!settings->loadConfig()) {
-            QMessageBox::critical(this, "Config file problem!", QString("I found config and cannot read this file :(\nTry delete file "+QString::fromStdString(settings->file_name)+" and run application again."), QMessageBox::Ok);
-            if(!settings->createConfig()) {
+    string config_file_path = settings->file_path;
+
+    if(settings->fileExist(config_file_path)) {
+        if(!settings->loadConfig(config_file_path)) {
+            QMessageBox::critical(this, "Config file problem!", QString("I found config and cannot read this file :(\nTry delete file "+QString::fromStdString(config_file_path)+" and run application again."), QMessageBox::Ok);
+            if(!settings->createConfig(config_file_path)) {
                 QMessageBox::critical(this, "Create config problem!", "Cannot create default config file.", QMessageBox::Ok);
             }
         }
     }else {
-        QMessageBox::critical(this, "Config file not found!", "This is first running application.\nI must create new config file now.", QMessageBox::Ok);
-        if(!settings->createConfig())
+        QMessageBox::information(this, "Config file not found!", "This is first running application.\nI must create new config file now.", QMessageBox::Ok);
+        if(!settings->createConfig(config_file_path))
             QMessageBox::critical(this, "Create config problem!", "Cannot create default config file.", QMessageBox::Ok);
     }
 }
 
 void MainWindow::on_play_button_clicked()
 {
+    QString movie_url = ui->movie_url->text();
+    string mplayer_path = settings->mplayer_path;
+    bool fullscreen = settings->fullscreen_mode;
+
     // Check typed information before playing
-    if(ui->movie_url->text().isEmpty()) {
+    if(movie_url.isEmpty()) {
         QMessageBox::warning(this, "Movie URL", "Please enter url from cda.pl.", QMessageBox::Ok);
         return;
-    }else if(ui->player_path->text().isEmpty()) {
+    }else if(mplayer_path.empty()) {
         QMessageBox::warning(this, "Player PATH", "Please enter path to your player.", QMessageBox::Ok);
         return;
     }
-
+    // Block application
     ui->centralWidget->setEnabled(false);
 
-    cda->movie_site = ui->movie_url->text().toStdString();;
-    cda->player_path = settings->default_player_path;
+    cda->movie_site = movie_url.toStdString();;
 
-    // Prepare information
-    // and play movie
+    // Prepare information and play movie
     if(cda->prepare()) {
-        if(!cda->openPlayer())
+        if(!cda->openPlayer(settings->mplayer_path, fullscreen))
             QMessageBox::critical(this, "Player running...", "Something is wrong :(\n"+QString::fromStdString(cda->error), QMessageBox::Ok);
     }else
-        QMessageBox::critical(this, "Error", QString("URL:\n"+ui->movie_url->text()+"\nThis URL is incorrect. Check URL and try again."), QMessageBox::Ok);
+        QMessageBox::critical(this, "Error", QString("URL:\n"+movie_url+"\nThis URL is incorrect. Check URL and try again."), QMessageBox::Ok);
 
+    // Unblock application
     ui->centralWidget->setEnabled(true);
 }
 
@@ -92,19 +98,25 @@ void MainWindow::on_actionInfo_triggered()
 
 void MainWindow::on_actionSettings_triggered()
 {
-    SettingsDialog settings_dialog(settings->default_player_path);
+    string config_file_path = settings->file_path;
+
+    SettingsDialog settings_dialog(settings);
+
+    // Block application
+    ui->centralWidget->setEnabled(false);
 
     switch(settings_dialog.exec())
     {
     case QDialog::Accepted:
-        settings->default_player_path = settings_dialog.ui->player_path->text().toStdString();
-        if(settings->saveConfig()) {
-            ui->player_path->setText(QString::fromStdString(settings->default_player_path));
-            cout << "Config Saved!" << endl;
+        if(settings->saveConfig(config_file_path)) {
+            if(!settings->loadConfig(config_file_path))
+                QMessageBox::critical(this, "Config file problem!", QString("I found config and cannot read this file :(\nTry delete file "+QString::fromStdString(config_file_path)+" and run application again."), QMessageBox::Ok);
         }else
-            cout << "Error not saved." << endl;
+            QMessageBox::critical(this, "Config file problem!", QString("I cannot save config :(\nCheck read-write permission to file "+QString::fromStdString(config_file_path)+" and run application again."), QMessageBox::Ok);
 
         break;
     }
 
+    // Block application
+    ui->centralWidget->setEnabled(true);
 }

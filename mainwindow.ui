@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>153</height>
+    <height>204</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,50 +66,119 @@ border-radius: 5px;
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
       <item>
-       <widget class="QLabel" name="player_label">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="info">
+          <property name="font">
+           <font>
+            <family>Ubuntu Condensed</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>You never using MPlayer?
+Click this link and read hotkey's</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="info_link">
+          <property name="font">
+           <font>
+            <family>Ubuntu Condensed</family>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&quot; text-decoration: none; color:#0000ff;&quot;&gt;&lt;a href=&quot;http://www.mplayerhq.hu/DOCS/man/en/mplayer.1.html#INTERACTIVE%20CONTROL&quot;&gt;www.MPlayer.hu Instruction&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::RichText</enum>
+          </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::LinksAccessibleByMouse</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item alignment="Qt::AlignRight">
+       <widget class="QLabel" name="app_with">
+        <property name="maximumSize">
+         <size>
+          <width>94</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Ubuntu Condensed</family>
-          <pointsize>11</pointsize>
          </font>
         </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>Player:</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;application&lt;br/&gt;using&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="player_path">
-        <property name="enabled">
-         <bool>true</bool>
+       <widget class="QLabel" name="mplayer_logo">
+        <property name="maximumSize">
+         <size>
+          <width>78</width>
+          <height>68</height>
+         </size>
         </property>
         <property name="font">
          <font>
-          <family>Ubuntu</family>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <family>Sans Serif</family>
          </font>
         </property>
-        <property name="cursor">
-         <cursorShape>ArrowCursor</cursorShape>
-        </property>
-        <property name="mouseTracking">
+        <property name="autoFillBackground">
          <bool>false</bool>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QLineEdit {
-border: 0;
-background: #fff;
-color: red;
-}</string>
-        </property>
         <property name="text">
-         <string>/usr/bin/vlc</string>
+         <string/>
         </property>
-        <property name="readOnly">
-         <bool>true</bool>
+        <property name="pixmap">
+         <pixmap resource="resource.qrc">:/images/images/mplayer.jpg</pixmap>
         </property>
        </widget>
       </item>
@@ -167,14 +236,13 @@ border: 1px solid black;
     <property name="title">
      <string>Program</string>
     </property>
-    <addaction name="actionHistory"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="styleSheet">
      <string notr="true">QMenu
@@ -216,6 +284,8 @@ border: 1px solid black;
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

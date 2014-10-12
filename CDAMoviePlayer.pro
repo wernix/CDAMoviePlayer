@@ -28,5 +28,7 @@ FORMS    += mainwindow.ui \
     infodialog.ui \
     settingsdialog.ui
 
-LIBS    += -lboost_thread -lboost_regex -lboost_program_options -L/usr/local/lib -lcurl
-#
+LIBS    += -lboost_regex -L/usr/local/lib -lcurl
+
+RESOURCES += \
+    resource.qrc
