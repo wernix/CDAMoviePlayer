@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>204</height>
+    <width>425</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,16 +29,23 @@
          </font>
         </property>
         <property name="text">
-         <string>Enter link to cda movie:</string>
+         <string>Searching title</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="movie_url">
+       <widget class="QLineEdit" name="search_text">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Ubuntu Condensed</family>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="cursor">
@@ -51,18 +58,120 @@ border-radius: 5px;
 }
 </string>
         </property>
+        <property name="maxLength">
+         <number>160</number>
+        </property>
         <property name="dragEnabled">
          <bool>true</bool>
         </property>
         <property name="placeholderText">
-         <string>ex. http://www.cda.pl/video/147810c3/The-Bridge-Na-granicy2013-S01E06-Lektor-PL</string>
+         <string>ex. The Monuments Man 2014</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="search_button">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="font">
+         <font>
+          <family>Ubuntu</family>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border: 1px solid rgb(50,50,200);
+border-radius: 5px;
+	padding: 7px; 
+}</string>
+        </property>
+        <property name="text">
+         <string>SEARCH</string>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="search_result">
+      <property name="font">
+       <font>
+        <family>Ubuntu</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="showGrid">
+       <bool>false</bool>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="play_button">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="font">
+       <font>
+        <family>Ubuntu</family>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border: 1px solid rgb(50,50,200);
+border-radius: 5px;
+	padding: 7px; 
+}</string>
+      </property>
+      <property name="text">
+       <string>PLAY</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -184,31 +293,6 @@ Click this link and read hotkey's</string>
       </item>
      </layout>
     </item>
-    <item>
-     <widget class="QPushButton" name="play_button">
-      <property name="font">
-       <font>
-        <family>Ubuntu</family>
-        <pointsize>8</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border: 1px solid rgb(50,50,200);
-border-radius: 5px;
-	padding: 7px; 
-}</string>
-      </property>
-      <property name="text">
-       <string>PLAY</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -216,7 +300,7 @@ border-radius: 5px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>425</width>
      <height>20</height>
     </rect>
    </property>
@@ -259,6 +343,7 @@ border: 1px solid black;
    <addaction name="menuProgram"/>
    <addaction name="menuAbout"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
@@ -282,10 +367,35 @@ border: 1px solid black;
     <string>Settings</string>
    </property>
   </action>
+  <action name="actionEnterKey">
+   <property name="text">
+    <string>EnterKey</string>
+   </property>
+   <property name="shortcut">
+    <string>Return</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="resource.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>search_result</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>play_button</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>212</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>221</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

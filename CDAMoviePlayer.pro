@@ -16,13 +16,17 @@ SOURCES += main.cpp\
     cdamain.cpp \
     infodialog.cpp \
     settingsdialog.cpp \
-    settings.cpp
+    settings.cpp \
+    cdasearch.cpp \
+    progressbar.cpp
 
 HEADERS  += mainwindow.h \
     cdamain.h \
     infodialog.h \
     settingsdialog.h \
-    settings.h
+    settings.h \
+    cdasearch.h \
+    progressbar.h
 
 FORMS    += mainwindow.ui \
     infodialog.ui \

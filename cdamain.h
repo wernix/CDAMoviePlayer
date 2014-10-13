@@ -22,10 +22,12 @@ class Cda_Main {
 
 private:
     string movie_url;
-    string system(string cmd);
 
     bool getSourceCode();
     bool getMovieUrlFromSourceCode(string source_file_path);
+
+    string tmpFile();
+    string system(string cmd);
 
 public:
     Cda_Main();

@@ -14,18 +14,30 @@ static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 }
 
 
-Cda_Main::Cda_Main()
+Cda_Main::Cda_Main() : cookie_file(tmpFile()),
+    source_file(tmpFile())
 {
-    // Generate tmp files
-    char cookie_f [L_tmpnam];
-    char source_f [L_tmpnam];
-    tmpnam(cookie_f);
-    tmpnam(source_f);
-    cookie_file = cookie_f;
-    source_file = source_f;
+
 }
 
 Cda_Main::~Cda_Main() {
+}
+
+// Generate tmp file path
+string Cda_Main::tmpFile()
+{
+    char tmp_path [L_tmpnam];
+    tmpnam(tmp_path);
+    return tmp_path;
+}
+
+// Preparing direct url to movie from cda site
+bool Cda_Main::prepare()
+{
+    if(getSourceCode()) {
+        return true;
+    }
+    return false;
 }
 
 // std::system function implementation
@@ -47,7 +59,7 @@ string Cda_Main::system(string cmd)
     return data;
 }
 
-// Func running media player
+// Opening MPlayer
 bool Cda_Main::openPlayer(string mplayer_path, bool fullscreen)
 {
     string options = " -cookies -cookies-file "+cookie_file;
@@ -68,7 +80,7 @@ bool Cda_Main::openPlayer(string mplayer_path, bool fullscreen)
     return true;
 }
 
-// Function get destination movie url from cda.pl url (tmp file)
+// Function save source code website to tmp file
 bool Cda_Main::getSourceCode()
 {
     CURL *curl;
@@ -102,7 +114,7 @@ bool Cda_Main::getSourceCode()
     return false;
 }
 
-// Get direct URL to movie from cda site source code
+// Get direct URL from source code tmp file
 bool Cda_Main::getMovieUrlFromSourceCode(string source_file_path)
 {
     ifstream file(source_file_path.c_str());
@@ -131,15 +143,6 @@ bool Cda_Main::getMovieUrlFromSourceCode(string source_file_path)
             movie_url = what[1].str();
             return true;
         }
-    }
-    return false;
-}
-
-// Preparing direct url to movie from cda site
-bool Cda_Main::prepare()
-{
-    if(getSourceCode()) {
-        return true;
     }
     return false;
 }
