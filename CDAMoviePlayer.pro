@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     settingsdialog.cpp \
     settings.cpp \
     cdasearch.cpp \
-    progressbar.cpp
+    progressbar.cpp \
+    item.cpp
 
 HEADERS  += mainwindow.h \
     cdamain.h \
@@ -26,7 +27,8 @@ HEADERS  += mainwindow.h \
     settingsdialog.h \
     settings.h \
     cdasearch.h \
-    progressbar.h
+    progressbar.h \
+    item.h
 
 FORMS    += mainwindow.ui \
     infodialog.ui \

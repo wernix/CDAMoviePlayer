@@ -6,6 +6,7 @@ InfoDialog::InfoDialog(QWidget *parent) :
     ui(new Ui::InfoDialog)
 {
     ui->setupUi(this);
+    ui->app_name->setText(QApplication::applicationName()+" "+QApplication::applicationVersion());
 }
 
 InfoDialog::~InfoDialog()

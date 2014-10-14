@@ -14,11 +14,6 @@ Cda_Search::Cda_Search(string search_text, Progress_Bar *progress_bar, int page)
         p_bar->upgrade(10);
         searchResult();
     }
-
-//        if(searchResult() == 24) {
-//            next_page = true;
-//        }else
-//            next_page = false;
 }
 
 // Conversion int -> string
@@ -75,7 +70,7 @@ int Cda_Search::searchResult()
     boost::regex search_result_box("class=.thumbElem.(video_[0-9]+).");
     boost::regex end_result_box("class=.(clear+).>$");
 
-    boost::regex result("class=.titleElem.+href=.(/video/[\\s\\S]+)\">([\\s\\S]+)</a>");
+    boost::regex item("class=.titleElem.+href=.(/video/[\\s\\S]+)\">([\\s\\S]+)</a>");
     boost::regex end_result("(</label>)");
 
     string::const_iterator start, end;
@@ -83,18 +78,16 @@ int Cda_Search::searchResult()
     boost::match_results<string::const_iterator> what;
     boost::match_flag_type flags = boost::match_default;
 
-    fstream file(source_file.c_str());
+    fstream s_file(source_file.c_str());
     string cur_line;
 
-    int items = 0;
-
-    while(getline(file, cur_line)) {
+    while(getline(s_file, cur_line)) {
         start = cur_line.begin();
         end = cur_line.end();
 
         if(boost::regex_search(start, end, what, div_class_videoContainer, flags)) {
 
-            while(getline(file, cur_line)) {
+            while(getline(s_file, cur_line)) {
                 start = cur_line.begin();
                 end = cur_line.end();
 
@@ -102,26 +95,27 @@ int Cda_Search::searchResult()
 
                 if(boost::regex_search(start, end, what, div_class_rowElem, flags)) {
 
-                    while(getline(file, cur_line)) {
+                    while(getline(s_file, cur_line)) {
                         start = cur_line.begin();
                         end = cur_line.end();
 
                         if(boost::regex_search(start, end, what, end_result_box, flags)) { break; }
 
                         if(boost::regex_search(start, end, what, search_result_box, flags)) {
-                            result_id.push_back(what[1].str());
+                            string video_id = what[1].str();
 
-                            while(getline(file, cur_line)) {
+                            while(getline(s_file, cur_line)) {
                                 start = cur_line.begin();
                                 end = cur_line.end();
 
                                 if(boost::regex_search(start, end, what, end_result, flags))
                                     break;
 
-                                if(boost::regex_search(start, end, what, result, flags)) {
-                                    result_title.push_back(what[2].str());
-                                    result_url.push_back("http://www.cda.pl" + what[1].str());
-                                    items++;
+                                if(boost::regex_search(start, end, what, item, flags)) {
+                                    int video_no = result.size();
+                                    string video_title = what[2].str();
+                                    string video_url = what[1].str();
+                                    result.push_back(new Item(video_no, video_id, video_title, video_url));
                                 }
                             }
                         }
@@ -130,5 +124,6 @@ int Cda_Search::searchResult()
             }
         }
     }
-    return items;
+    s_file.close();
+    return result.size();
 }

@@ -1,6 +1,7 @@
 #include "settings.h"
 
-Settings::Settings(string f) : file_path(f)
+Settings::Settings(string f) : cda_address("http://www.cda.pl"),
+    cfg_path(f)
 {
     if(checkMplayerInstalled()) {
         mplayer_installed = true;
@@ -14,6 +15,7 @@ bool Settings::fileExist(string file_path)
 {
     FILE *file;
     file = fopen(file_path.c_str(), "r");
+
     if(!file)
         return false;
     else
@@ -23,27 +25,25 @@ bool Settings::fileExist(string file_path)
 }
 
 // Create config file with default settings
-bool Settings::createConfig(string config_file_path)
+bool Settings::createConfig(string cfg_path)
 {
-    bool ok = false;
+    fstream cfg_file(cfg_path.c_str(), ios::out | ios::trunc);
+    string option1 = option("playing_mode", "window");
 
-    ofstream file(config_file_path.c_str(), ofstream::binary);
-    string option1 = "playing_mode = 'window'\n";
-    if(file.is_open()) {
-        file.write(option1.c_str(), option1.size());
-        ok = true;
-        file.close();
+    if(cfg_file) {
+        cfg_file.write(option1.c_str(), option1.size());
+        cfg_file.close();
     }
-    if(!loadConfig(config_file_path))
-        ok = false;
+    if(!loadConfig(cfg_path))
+        return false;
 
-    return ok;
+    return true;
 }
 
 // Load config from file
-bool Settings::loadConfig(string config_file_path)
+bool Settings::loadConfig(string cfg_path)
 {
-    ifstream file(config_file_path.c_str());
+    ifstream cfg_file(cfg_path.c_str());
     string temp;
 
     string option1_name = "playing_mode";
@@ -55,7 +55,7 @@ bool Settings::loadConfig(string config_file_path)
     boost::match_flag_type flags = boost::match_default;
     string::const_iterator start, end;
 
-    while(getline(file, temp)) {
+    while(getline(cfg_file, temp)) {
         start = temp.begin();
         end - temp.end();
 
@@ -72,42 +72,49 @@ bool Settings::loadConfig(string config_file_path)
                 fullscreen_mode = false;
             if(option1_value == "fullscreen")
                 fullscreen_mode = true;
-
             return true;
         }
     }
+    cfg_file.close();
+
     return false;
 }
 
 // Save config to file
-bool Settings::saveConfig(string config_file_path)
+bool Settings::saveConfig(string cfg_path)
 {
-    string option = "playing_mode = ";
+    string option1_name = "playing_mode";
 
-    if(fullscreen_mode)
-        option.append("'fullscreen'");
-    else
-        option.append("'window'");
+    fstream cfg_file(cfg_path.c_str(), ios::out | ios::trunc);
 
-    option.append("\n");
+    if(cfg_file) {
+        string save_opt;
 
-    fstream file(config_file_path.c_str());
-    if(file.is_open()) {
-        file.close();
-        file.open(config_file_path.c_str(), std::ios::out | std::ios::trunc);
-        file.write(option.c_str(), option.size());
-        file.close();
+        if(fullscreen_mode)
+            save_opt = option(option1_name, "fullscreen");
+        else
+            save_opt = option(option1_name, "window");
+
+        cfg_file.write(save_opt.c_str(), save_opt.size());
+        cfg_file.close();
     }else
         return false;
+
     return true;
+}
+
+string Settings::option(string opt, string value)
+{
+    return (opt + " = '" + value + "'\n");
 }
 
 // Check mplayer installation path
 // If mplayer is not installed return false
 bool Settings::checkMplayerInstalled()
 {
-    string result = system("which mplayer");
-    if(result.empty())
+    string output = system("which mplayer");
+
+    if(output.empty())
         return false;
 
     return true;
@@ -118,6 +125,7 @@ bool Settings::checkMplayerInstalled()
 string Settings::getMplayerPath()
 {
     string result = system("which mplayer");
+
     if(result.empty())
         return "MPlayer is not installed";
 
@@ -128,7 +136,7 @@ string Settings::getMplayerPath()
 // return output from console
 string Settings::system(string cmd)
 {
-    string data;
+    string output;
     FILE * stream;
     const int max_buffer = 256;
     char buffer[max_buffer];
@@ -137,8 +145,8 @@ string Settings::system(string cmd)
     stream = popen(cmd.c_str(), "r");
     if (stream) {
         while (!feof(stream))
-            if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+            if (fgets(buffer, max_buffer, stream) != NULL) output.append(buffer);
                 pclose(stream);
     }
-    return data;
+    return output;
 }

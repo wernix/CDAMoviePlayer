@@ -25,4 +25,7 @@ void Progress_Bar::upgrade(int value)
     p_bar->setValue(cur+value);
 }
 
-void Progress_Bar::resize(int max) { p_bar->setMaximum(max); }
+void Progress_Bar::resize(int max)
+{
+    p_bar->setMaximum(max);
+}

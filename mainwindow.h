@@ -10,6 +10,7 @@
 #include <settings.h>
 #include <cdasearch.h>
 #include <progressbar.h>
+#include <item.h>
 
 namespace Ui {
 class MainWindow;
@@ -49,9 +50,10 @@ private:
     void clearSearchResult();
     void errorMsg(QString title, QString text);
     void infoMsg(QString title, QString text);
-    void addResult(Cda_Search *search, Progress_Bar *p_bar, int rows, int at = 0);
+//    void addResult(Cda_Search *search, Progress_Bar *p_bar, int rows, int at = 0);
+    void addResult(vector<Item*> *results, Progress_Bar *p_bar, int at = 0);
     bool addPageResult(QString search_text, Progress_Bar *p_bar, int page = 0);
-    void addItemResult(int no, string id, string title, string url);
+    void addItemResult(Item *item);
     void removeItemResult(int row);
     void setupSearchResultTable();
     void addActions();

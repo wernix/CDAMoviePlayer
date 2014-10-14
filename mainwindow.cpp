@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     prepareConfig();
-
     setupWindow();
 }
 
@@ -36,7 +35,7 @@ MainWindow::~MainWindow()
 // Check / Load / Create config
 void MainWindow::prepareConfig()
 {
-    string cfg_path = settings->file_path;
+    string cfg_path = settings->cfg_path;
 
     if(settings->fileExist(cfg_path)) {
         if(!settings->loadConfig(cfg_path)) {
@@ -79,7 +78,7 @@ void MainWindow::setupSearchResultTable()
     ui->search_result->setColumnWidth(1, 100);
     ui->search_result->setColumnWidth(2, 230);
     ui->search_result->setColumnHidden(3, true);
-    addItemResult(0, "Info", "Search and watching your movie", "");
+    addItemResult(new Item(0, "Info", "Search and watching your movie", ""));
 }
 
 void MainWindow::setupWindow()
@@ -112,6 +111,7 @@ void MainWindow::on_play_button_clicked()
 
         if(!addPageResult(QString::fromStdString(movie_url), &p_bar, next_page)) {
             removeItemResult(all_row-1);
+            cout << movie_url << endl;
         }
         return;
     }
@@ -161,9 +161,8 @@ void MainWindow::on_actionSettings_triggered()
 {
     SettingsDialog settings_dialog(settings);
 
-    string cfg_path = settings->file_path;
+    string cfg_path = settings->cfg_path;
 
-    // Block application
     ui->centralWidget->setEnabled(false);
 
     switch(settings_dialog.exec())
@@ -178,7 +177,6 @@ void MainWindow::on_actionSettings_triggered()
         break;
     }
 
-    // Block application
     ui->centralWidget->setEnabled(true);
 }
 
@@ -197,7 +195,7 @@ void MainWindow::on_search_button_clicked()
 
     Cda_Search search(search_text.toStdString(), &p_bar, 1);
 
-    int items = search.result_title.size();
+    int items = search.result.size();
 
     if(items) {
         clearSearchResult();
@@ -206,29 +204,37 @@ void MainWindow::on_search_button_clicked()
         }
     }else {
         playButtonDisable();
-        addItemResult(0, "Not found", "", "");
+        addItemResult(new Item(0, "Not found", "", ""));
         infoMsg("Search result", QString("Not found result in cda.pl\nTry again using other words"));
         p_bar.finish();
         return;
     }
-
 }
 
-void MainWindow::addItemResult(int no, string id, string title, string url)
+void MainWindow::addItemResult(Item *item)
 {
     int row = ui->search_result->rowCount();
-    QString no_str = QString::number(no);
+    QString i_no = QString::number(row+1);
+    QString i_id = QString::fromStdString(item->getId());
+    QString i_title = QString::fromStdString(item->getTitle());
+    QString i_url;
 
     // If \no\ is null add empty
-    if(!no)
-        no_str.clear();
+    if(i_id == "Info")
+        i_no.clear();
+
+    if(!item->getNo() && i_title == "(more)") {
+        i_no.clear();
+        i_url = QString::fromStdString(item->getUrl());
+    }else
+        i_url = QString::fromStdString(settings->cda_address)+QString::fromStdString(item->getUrl());
 
     ui->search_result->setRowCount(row+1);
 
-    ui->search_result->setItem(row, 0, new QTableWidgetItem(no_str));
-    ui->search_result->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(id)));
-    ui->search_result->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(title)));
-    ui->search_result->setItem(row, 3, new QTableWidgetItem(QString::fromStdString(url)));
+    ui->search_result->setItem(row, 0, new QTableWidgetItem(i_no));
+    ui->search_result->setItem(row, 1, new QTableWidgetItem(i_id));
+    ui->search_result->setItem(row, 2, new QTableWidgetItem(i_title));
+    ui->search_result->setItem(row, 3, new QTableWidgetItem(i_url));
 }
 
 // Function add search items to search result box and return true
@@ -236,13 +242,13 @@ void MainWindow::addItemResult(int no, string id, string title, string url)
 bool MainWindow::addPageResult(QString search_text, Progress_Bar *p_bar, int page)
 {
     Cda_Search search(search_text.toStdString(), p_bar, page);
-
-    int items = search.result_title.size();
+    vector<Item*> *res = &search.result;
+    int items = res->size();
 
     if(items) {
         int add_after = ui->search_result->rowCount();
         p_bar->resize(items);
-        addResult(&search, p_bar, items, add_after);
+        addResult(&search.result, p_bar, add_after);
     }else {
         playButtonDisable();
         p_bar->finish();
@@ -252,18 +258,20 @@ bool MainWindow::addPageResult(QString search_text, Progress_Bar *p_bar, int pag
     // When is 24 items found (all results from one page in cda.pl)
     // Add as 25 item \more button\ to load more results
     if(items == 24) {
-        addItemResult(0, "", "(more)", search_text.toStdString());
+        addItemResult(new Item(0, "", "(more)", search_text.toStdString()));
     }
 
     return (items > 0);
 }
 
-void MainWindow::addResult(Cda_Search *search, Progress_Bar *p_bar, int items, int at)
+//void MainWindow::addResult(Cda_Search *search, Progress_Bar *p_bar, int items, int at)
+void MainWindow::addResult(vector<Item*> *results, Progress_Bar *p_bar, int at)
 {
+    int items = results->size();
     int all_rows = items+at;
 
     for(int i=at , res = 0; all_rows > i; i++ , res++) {
-        addItemResult(i+1, search->result_id[res], search->result_title[res], search->result_url[res]);
+        addItemResult(results->at(res));
         p_bar->upgrade(1);
     }
     p_bar->finish();
@@ -272,7 +280,6 @@ void MainWindow::addResult(Cda_Search *search, Progress_Bar *p_bar, int items, i
 void MainWindow::removeItemResult(int row)
 {
     ui->search_result->removeRow(row);
-    //ui->search_result->setRowCount(row);
 }
 
 void MainWindow::errorMsg(QString title, QString text)

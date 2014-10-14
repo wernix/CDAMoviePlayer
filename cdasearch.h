@@ -11,6 +11,7 @@
 #include <boost/regex.hpp>
 
 #include <progressbar.h>
+#include <item.h>
 
 using namespace std;
 
@@ -19,9 +20,7 @@ class Cda_Search
 public:
     Cda_Search(string search_text, Progress_Bar *p_bar, int page);
 
-    vector<string> result_title;
-    vector<string> result_url;
-    vector<string> result_id;
+    vector<Item*> result;
 
     bool next_page;
 

@@ -10,11 +10,19 @@
     <height>346</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Ubuntu</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>www.cda.pl Movie Player</string>
+   <string>CDA Movie Player</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255,255,255);</string>
+  </property>
+  <property name="documentMode">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">

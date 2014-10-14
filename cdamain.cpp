@@ -62,18 +62,18 @@ string Cda_Main::system(string cmd)
 // Opening MPlayer
 bool Cda_Main::openPlayer(string mplayer_path, bool fullscreen)
 {
-    string options = " -cookies -cookies-file "+cookie_file;
+    string mplayer_options = " -cookies -cookies-file "+cookie_file;
 
     if(fullscreen)
-        options.append(" -fs");
+        mplayer_options.append(" -fs");
 
-    string cmd = mplayer_path + options + " '"+movie_url+"'";
-    string result = system(cmd);
+    string cmd = mplayer_path + mplayer_options + " '"+movie_url+"'";
+    string output = system(cmd);
 
-    if(result.empty()) {
+    if(output.empty()) {
         return false;
-    }else if(result.substr(0,3) == "sh:") {
-        error = result;
+    }else if(output.substr(0,3) == "sh:") {
+        error = output;
         return false;
     }
 
@@ -117,7 +117,7 @@ bool Cda_Main::getSourceCode()
 // Get direct URL from source code tmp file
 bool Cda_Main::getMovieUrlFromSourceCode(string source_file_path)
 {
-    ifstream file(source_file_path.c_str());
+    ifstream s_file(source_file_path.c_str());
     string temp;
 
     static const boost::regex rx("\'([h]+[t]+[m]+[l]+[5])\'");
@@ -127,13 +127,13 @@ bool Cda_Main::getMovieUrlFromSourceCode(string source_file_path)
     boost::match_results<string::const_iterator> what;
     boost::match_flag_type flags = boost::match_default;
 
-    while(getline(file, temp)) {
+    while(getline(s_file, temp)) {
         start = temp.begin();
         end = temp.end();
 
         if(boost::regex_search(start, end, what, rx, flags)) {
-            getline(file, temp); // skip one line
-            getline(file, temp);
+            getline(s_file, temp); // skip one line
+            getline(s_file, temp);
             start = temp.begin();
             end = temp.end();
         }else
@@ -141,8 +141,10 @@ bool Cda_Main::getMovieUrlFromSourceCode(string source_file_path)
 
         if(boost::regex_search(start, end, what, rx2, flags)) {
             movie_url = what[1].str();
+            s_file.close();
             return true;
         }
     }
+    s_file.close();
     return false;
 }
