@@ -1,15 +1,10 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2014-10-05T19:45:05
-#
-
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = CDAMoviePlayer
-TEMPLATE = app
+TARGET = bin/CDAMoviePlayer
 
+TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -34,7 +29,7 @@ FORMS    += mainwindow.ui \
     infodialog.ui \
     settingsdialog.ui
 
-LIBS    += -lboost_regex -lcurl
-
 RESOURCES += \
     resource.qrc
+
+LIBS    += -lboost_regex -lcurl

@@ -26,9 +26,12 @@ Cda_Main::~Cda_Main() {
 // Generate tmp file path
 string Cda_Main::tmpFile()
 {
-    char tmp_path [L_tmpnam];
-    tmpnam(tmp_path);
-    return tmp_path;
+    char f_name[L_tmpnam];
+
+    if(!tmpnam(f_name))
+        return "tmpfile";
+
+    return f_name;
 }
 
 // Preparing direct url to movie from cda site
