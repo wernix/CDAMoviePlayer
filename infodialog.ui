@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>257</height>
+    <height>258</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,17 +28,26 @@ background-color: rgb(255,255,255);
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
+     <property name="maximumSize">
       <size>
-       <width>140</width>
-       <height>75</height>
+       <width>97</width>
+       <height>88</height>
       </size>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resource.qrc">:/images/images/logo.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -47,16 +56,16 @@ background-color: rgb(255,255,255);
      <property name="font">
       <font>
        <family>Ubuntu</family>
-       <pointsize>15</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <pointsize>19</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
      <property name="text">
-      <string>app_name</string>
+      <string>Movie Player</string>
      </property>
     </widget>
    </item>
@@ -162,6 +171,8 @@ padding: 7px;
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

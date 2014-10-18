@@ -50,7 +50,6 @@ private:
     void clearSearchResult();
     void errorMsg(QString title, QString text);
     void infoMsg(QString title, QString text);
-//    void addResult(Cda_Search *search, Progress_Bar *p_bar, int rows, int at = 0);
     void addResult(vector<Item*> *results, Progress_Bar *p_bar, int at = 0);
     bool addPageResult(QString search_text, Progress_Bar *p_bar, int page = 0);
     void addItemResult(Item *item);
