@@ -13,8 +13,8 @@ MAKE_PATH=$(find $BIN_PATH -name make)
 
 # LIBS
 L_PATH='/usr/lib/'
-L_CURL=$(find $L_PATH -name libcurl.so)
-L_REGEX=$(find $L_PATH -name libboost_regex.so)
+L_CURL=$(find $L_PATH -name libcurl.a)
+L_REGEX=$(find $L_PATH -name libboost_regex.a)
 
 function end {
     echo ">> Ending..."
@@ -34,6 +34,7 @@ echo '####################################'
 echo '>> Checking Qt path...'
 if [ -z "$QTDIR" ]
 then
+    echo '>>> Not found QTDIR variable!'
     echo '>>> Enter Qt installation path:'
     read QT_PATH
 
@@ -90,7 +91,8 @@ if [ -e "$L_CURL" ]
 then
     echo '.........found'
 else
-    echo "[ERROR] libcurl not found in $L_PATH"
+    echo "[ERROR] libcurl-dev not found in $L_PATH"
+    echo "[ERROR] apt-get install libcurl4-gnutls-dev"
     end
 fi
 
@@ -100,7 +102,8 @@ if [ -e "$L_REGEX" ]
 then
     echo '.........found'
 else
-    echo "[ERROR] libboost-regex not found in $L_PATH"
+    echo "[ERROR] libboost-regex-dev not found in $L_PATH"
+    echo "[ERROR] apt-get install libboost-regex-dev"
     end
 fi
 
@@ -112,4 +115,4 @@ echo '.........done'
 
 
 echo '>> Running make'
-make clean && make
+#make clean && make
