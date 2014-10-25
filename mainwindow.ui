@@ -22,9 +22,6 @@
    <iconset resource="resource.qrc">
     <normaloff>:/images/images/logo.png</normaloff>:/images/images/logo.png</iconset>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(255,255,255);</string>
-  </property>
   <property name="documentMode">
    <bool>true</bool>
   </property>
@@ -36,8 +33,10 @@
        <widget class="QLabel" name="enter_link_label">
         <property name="font">
          <font>
-          <family>Ubuntu Condensed</family>
-          <pointsize>12</pointsize>
+          <family>Sans Serif</family>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
         </property>
         <property name="text">
@@ -93,11 +92,7 @@
          <cursorShape>IBeamCursor</cursorShape>
         </property>
         <property name="styleSheet">
-         <string notr="true">QLineEdit {
-border: 1px solid rgb(255,20,20);
-border-radius: 5px;
-}
-</string>
+         <string notr="true"/>
         </property>
         <property name="maxLength">
          <number>160</number>
@@ -120,7 +115,7 @@ border-radius: 5px;
         </property>
         <property name="font">
          <font>
-          <family>Ubuntu</family>
+          <family>Sans Serif</family>
           <pointsize>8</pointsize>
           <weight>75</weight>
           <bold>true</bold>
@@ -193,7 +188,7 @@ border-radius: 5px;
       </property>
       <property name="font">
        <font>
-        <family>Ubuntu</family>
+        <family>Sans Serif</family>
         <pointsize>8</pointsize>
         <weight>75</weight>
         <bold>true</bold>
@@ -231,7 +226,7 @@ border-radius: 5px;
          <widget class="QLabel" name="info">
           <property name="font">
            <font>
-            <family>Ubuntu Condensed</family>
+            <family>Sans Serif</family>
             <pointsize>11</pointsize>
            </font>
           </property>
@@ -245,7 +240,7 @@ Click this link and read hotkey's</string>
          <widget class="QLabel" name="info_link">
           <property name="font">
            <font>
-            <family>Ubuntu Condensed</family>
+            <family>Sans Serif</family>
             <pointsize>11</pointsize>
            </font>
           </property>
@@ -288,7 +283,7 @@ Click this link and read hotkey's</string>
         </property>
         <property name="font">
          <font>
-          <family>Ubuntu Condensed</family>
+          <family>Sans Serif</family>
          </font>
         </property>
         <property name="layoutDirection">
@@ -342,13 +337,8 @@ Click this link and read hotkey's</string>
      <x>0</x>
      <y>0</y>
      <width>425</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QMenuBar {
-background-color: rgb(255,255,255);
-}</string>
    </property>
    <widget class="QMenu" name="menuProgram">
     <property name="styleSheet">

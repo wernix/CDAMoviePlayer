@@ -4,4 +4,7 @@
         <file>images/cdamovieplayer.png</file>
         <file>images/logo.png</file>
     </qresource>
+    <qresource prefix="/txt">
+        <file>COPYING</file>
+    </qresource>
 </RCC>

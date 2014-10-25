@@ -17,7 +17,8 @@ public:
 
 private slots:
     void on_ok_button_clicked();
-
+    void on_license_button_clicked();
+    
 private:
     Ui::InfoDialog *ui;
 };

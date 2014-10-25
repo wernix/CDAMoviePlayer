@@ -18,8 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     cda = new Cda_Main;
 
     if(!settings->mplayer_installed) {
-        errorMsg("MPlayer not installed!", "MPlayer is not installed (required). Try running after insall MPlayer.");
-        QApplication::quit();
+        errorMsg("Not installed!", "MPlayer is not installed.\nInstall and try again later.\nExample: apt-get install mplayer.");
+        cout << "[ERROR] Install mplayer - apt-get install mplayer\n";
+        exit(1);
     }
 
     prepareConfig();

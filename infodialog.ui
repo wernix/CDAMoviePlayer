@@ -7,17 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>258</height>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Information</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true">QDialog
-{
-background-color: rgb(255,255,255);
-}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item alignment="Qt::AlignHCenter">
@@ -30,8 +24,8 @@ background-color: rgb(255,255,255);
      </property>
      <property name="maximumSize">
       <size>
-       <width>97</width>
-       <height>88</height>
+       <width>200</width>
+       <height>100</height>
       </size>
      </property>
      <property name="frameShape">
@@ -44,7 +38,7 @@ background-color: rgb(255,255,255);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="resource.qrc">:/images/images/logo.png</pixmap>
+      <pixmap resource="resource.qrc">:/images/images/cdamovieplayer.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -55,7 +49,7 @@ background-color: rgb(255,255,255);
     <widget class="QLabel" name="app_name">
      <property name="font">
       <font>
-       <family>Ubuntu</family>
+       <family>Sans Serif</family>
        <pointsize>19</pointsize>
        <weight>50</weight>
        <bold>false</bold>
@@ -65,7 +59,7 @@ background-color: rgb(255,255,255);
       <bool>false</bool>
      </property>
      <property name="text">
-      <string>Movie Player</string>
+      <string>ver</string>
      </property>
     </widget>
    </item>
@@ -80,7 +74,7 @@ background-color: rgb(255,255,255);
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>10</height>
+       <height>5</height>
       </size>
      </property>
     </spacer>
@@ -145,6 +139,29 @@ p, li { white-space: pre-wrap; }
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="license_button">
+     <property name="font">
+      <font>
+       <family>Ubuntu</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton 
+{
+border: 1px solid rgb(50,50,200);
+border-radius: 5px;
+padding: 7px; 
+}</string>
+     </property>
+     <property name="text">
+      <string>LICENSE</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QPushButton" name="ok_button">

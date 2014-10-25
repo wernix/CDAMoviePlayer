@@ -13,11 +13,9 @@
   <property name="windowTitle">
    <string>Settings</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QDialog
-{
-background-color: rgb(255,255,255);
-}</string>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/images/images/logo.png</normaloff>:/images/images/logo.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -26,7 +24,7 @@ background-color: rgb(255,255,255);
       <widget class="QLabel" name="mplayer_path_title">
        <property name="font">
         <font>
-         <family>Ubuntu Condensed</family>
+         <family>Sans Serif</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -39,7 +37,7 @@ background-color: rgb(255,255,255);
       <widget class="QLineEdit" name="mplayer_path">
        <property name="font">
         <font>
-         <family>Ubuntu Condensed</family>
+         <family>Sans Serif</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -48,6 +46,7 @@ background-color: rgb(255,255,255);
 border: 0px solid rgb(255,20,20);
 border-radius: 5px;
 color: rgb(230, 20, 20);
+background: transparent;
 }
 </string>
        </property>
@@ -63,7 +62,7 @@ color: rgb(230, 20, 20);
       <widget class="QLabel" name="select_mode_title">
        <property name="font">
         <font>
-         <family>Ubuntu Condensed</family>
+         <family>Sans Serif</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -81,7 +80,7 @@ color: rgb(230, 20, 20);
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="font">
       <font>
-       <family>Ubuntu</family>
+       <family>Sans Serif</family>
        <pointsize>8</pointsize>
        <weight>75</weight>
        <bold>true</bold>
@@ -119,7 +118,9 @@ font-weight: bold;
   <tabstop>select_mode</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

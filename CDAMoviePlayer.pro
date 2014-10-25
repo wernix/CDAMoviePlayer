@@ -14,7 +14,8 @@ SOURCES += main.cpp\
     settings.cpp \
     cdasearch.cpp \
     progressbar.cpp \
-    item.cpp
+    item.cpp \
+    infodialog_license.cpp
 
 HEADERS  += mainwindow.h \
     cdamain.h \
@@ -23,11 +24,13 @@ HEADERS  += mainwindow.h \
     settings.h \
     cdasearch.h \
     progressbar.h \
-    item.h
+    item.h \
+    infodialog_license.h
 
 FORMS    += mainwindow.ui \
     infodialog.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    infodialog_license.ui
 
 RESOURCES += \
     resource.qrc
